@@ -1,5 +1,7 @@
 # 🎗️ Breast Cancer Classification with Neural Network (NN)
 > **An Enterprise Multi-Agent AI Ecosystem for Precision Oncology & Biopsy Classification**
+<img width="1894" height="914" alt="Screenshot 2026-07-30 014655" src="https://github.com/user-attachments/assets/516e0c94-8d62-4082-a14f-459dc5bc22e3" />
+
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
