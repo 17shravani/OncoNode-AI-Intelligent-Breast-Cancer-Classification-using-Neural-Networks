@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onconode-gateway
+  namespace: oncology-diagnostics
+  labels:
+    app: onconode-gateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: onconode-gateway
+  template:
+    metadata:
+      labels:
+        app: onconode-gateway
+    spec:
+      containers:
+      - name: gateway-api
+        image: onconode/gateway:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        env:
+        - name: DATABASE_URL
+          value: "sqlite:////data/onconode.db"
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: onconode-secrets
+              key: secret-key
+        volumeMounts:
+        - name: onconode-db-storage
+          mountPath: /data
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 15
+      volumes:
+      - name: onconode-db-storage
+        persistentVolumeClaim:
+          claimName: db-pvc-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: onconode-service
+  namespace: oncology-diagnostics
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8000
+  selector:
+    app: onconode-gateway
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: onconode-hpa
+  namespace: oncology-diagnostics
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: onconode-gateway
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75

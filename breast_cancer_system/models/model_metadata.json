@@ -1,0 +1,38 @@
+{
+    "best_model_name": "Neural Network (MLP)",
+    "metrics": {
+        "model_name": "Neural Network (MLP)",
+        "accuracy": 0.8157894736842105,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1": 0.8,
+        "roc_auc": 0.9957010582010583,
+        "pr_auc": 0.9926692964715513
+    },
+    "params": {
+        "Logistic Regression": {
+            "C": 2.656341001053161,
+            "penalty": "l1"
+        },
+        "Random Forest": {
+            "n_estimators": 64,
+            "max_depth": 10,
+            "min_samples_split": 8,
+            "min_samples_leaf": 8
+        },
+        "XGBoost": {
+            "n_estimators": 133,
+            "max_depth": 4,
+            "learning_rate": 0.10460958922536588,
+            "subsample": 0.6590252345898553,
+            "colsample_bytree": 0.7885344338062907,
+            "min_child_weight": 2
+        },
+        "Neural Network (MLP)": {
+            "layer1": 32,
+            "layer2": 16,
+            "alpha": 0.006073455784756652,
+            "learning_rate_init": 0.00039198261109585776
+        }
+    }
+}
